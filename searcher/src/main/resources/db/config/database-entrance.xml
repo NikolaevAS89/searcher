@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                                                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                                                    http://www.springframework.org/schema/jdbc
+                                                    http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
+
+    <jdbc:embedded-database id="entrance" type="HSQL">
+        <jdbc:script location="classpath:db/sql/database-entrance-createdb.sql"/>
+    </jdbc:embedded-database>
+
+    <bean id="entranceJdbcTemplate" name="entranceJdbcTemplate"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="entranceDbcpDataSource"/>
+    </bean>
+
+    <bean id="entranceDbcpDataSource" name="entranceDbcpDataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+        <property name="url" value="jdbc:hsqldb:mem:entrance"/>
+        <property name="username" value="sa"/>
+        <property name="password" value=""/>
+    </bean>
+</beans>
