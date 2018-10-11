@@ -2,24 +2,24 @@ package ru.timestop.entrance.generator;
 
 import java.io.*;
 import java.util.Random;
-import org.apache.log4j.Logger;
+
 import static ru.timestop.entrance.utilites.IOUtil.closeQuiet;
 import static ru.timestop.entrance.utilites.IOUtil.flushQuiet;
 
 /**
- * generate number from range 0 and 65536
- * avarage number length is 4.8 (5)
- * 1 Gb = 1073741824 byte ~ 185127900 number
+ * generate number from range 0 and 2147483647
+ * avarage number length is 8.9 (~9)
+ * 1 Gb = 1073741824 byte ~ 100000000 number
  *
  * @author t.i.m.e.s.t.o.p
  * @version 1.0.0
  * @since 29.09.2018
  */
 public class Generator {
-    private static final Logger LOG = Logger.getLogger(Generator.class);
+    //private static final Logger LOG = Logger.getLogger(Generator.class);
 
-    private static final int NUMBER_COUNT = 185127900;
-    private static final int UPPER_BOUND = 65536;
+    private static final int NUMBER_COUNT = 100000000;
+    private static final int UPPER_BOUND = Integer.MAX_VALUE;
     private static final String FILES_MASK = "numbers%d.data";
 
     private final int filesCount;
@@ -57,7 +57,7 @@ public class Generator {
         }
     }
 
-    public static void main(String[] args) {
-        new Generator(4).generate();
+    public static void main(String[] args){
+        new Generator(1).generate();
     }
 }

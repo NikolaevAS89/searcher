@@ -13,4 +13,8 @@ public enum ResultCode {
     ResultCode(String code) {
         this.code = code;
     }
+
+    public String toString() {
+        return code;
+    }
 }

@@ -5,7 +5,7 @@ package ru.timestop.entrance.exception;
  * @version 1.0.0
  * @since 30.09.2018
  */
-public class NumberNotFoundException extends ResultServiceException {
+public class NumberNotFoundException extends Exception {
     public NumberNotFoundException() {
     }
 }

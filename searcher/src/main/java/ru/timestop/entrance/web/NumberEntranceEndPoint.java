@@ -5,10 +5,8 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import ru.timestop.entrance.generated.GetResultRequest;
-import ru.timestop.entrance.generated.GetResultResponse;
-import ru.timestop.entrance.generated.Result;
-import ru.timestop.entrance.service.ResultService;
+import ru.timestop.entrance.generated.*;
+import ru.timestop.entrance.service.facade.ResultService;
 
 /**
  * @author t.i.m.e.s.t.o.p
@@ -22,12 +20,11 @@ public class NumberEntranceEndPoint {
     @Autowired
     private ResultService resultService;
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getResult")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "findNumberRequest")
     @ResponsePayload
-    public GetResultResponse getResult(@RequestPayload GetResultRequest request) {
+    public FindNumberResponse findNumber(@RequestPayload FindNumberRequest request) {
         Result result =  resultService.getResult(request.getNumber());
-
-        GetResultResponse response = new GetResultResponse();
+        FindNumberResponse response = new FindNumberResponse();
         response.setResult(result);
 
         return response;

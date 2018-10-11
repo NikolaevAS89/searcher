@@ -3,7 +3,7 @@
            targetNamespace="http://timestop.ru/entrance/generated"
            elementFormDefault="qualified">
 
-    <xs:element name="getResultResponse">
+    <xs:element name="findNumberResponse">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="Result" type="tns:result"/>
@@ -11,7 +11,7 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="getResultRequest">
+    <xs:element name="findNumberRequest">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="number" type="xs:int"/>
