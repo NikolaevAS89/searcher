@@ -24,7 +24,7 @@ public class ResultEntity {
     private Integer number;
     @SerializedName(value = "filenames")
     private String filenames;
-    @SerializedName(value = "error")
+    @SerializedName(value = "errors")
     private String error;
 
     public Integer getId() {
@@ -76,14 +76,14 @@ public class ResultEntity {
         private ResultCode code;
         private Integer number;
         private List<String> filenames;
-        private Throwable error;
+        private List<Throwable> errors;
 
         public Builder(Integer number) {
             this.id = null;
             this.code = ResultCode.OK;
             this.number = number;
             this.filenames = new ArrayList<>();
-            this.error = null;
+            this.errors = new ArrayList<>();
 
         }
 
@@ -102,8 +102,8 @@ public class ResultEntity {
             return this;
         }
 
-        public Builder setError(Throwable error) {
-            this.error = error;
+        public Builder addError(Throwable error) {
+            this.errors.add(error);
             return this;
         }
 
@@ -114,10 +114,10 @@ public class ResultEntity {
             result.setNumber(number);
             String files = String.join(DELIMITER, filenames);
             result.setFilenames(files);
-            if (error == null) {
+            if (errors.isEmpty()) {
                 result.setError(null);
             } else {
-                result.setError(error.getLocalizedMessage());
+                result.setError("While search " + errors.size() + " exceptions was happend");
             }
             return result;
         }

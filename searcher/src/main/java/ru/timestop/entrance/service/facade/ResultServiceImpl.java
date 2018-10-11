@@ -52,7 +52,7 @@ public class ResultServiceImpl implements ResultService {
                 AgregatedSearchResult agregated = future.get();
 
                 if (agregated.getFiles().isEmpty()) {
-                    builder.setCode(ResultCode.NOT_FOUND).setError(new NumberNotFoundException());
+                    builder.setCode(ResultCode.NOT_FOUND).addError(new NumberNotFoundException());
                 } else {
                     for (String fileId : agregated.getFiles()) {
                         builder.addFilename(fileId);
@@ -60,12 +60,12 @@ public class ResultServiceImpl implements ResultService {
                 }
                 if (!agregated.getExceptions().isEmpty()) {
                     for (Throwable e : agregated.getExceptions()) {
-                        builder.setError(e);
+                        builder.addError(e);
                     }
                     builder.setCode(ResultCode.ERROR);
                 }
             } catch (Throwable e) {
-                builder.setCode(ResultCode.ERROR).setError(e);
+                builder.setCode(ResultCode.ERROR).addError(e);
             }
             resultEntity = builder.build();
         }
