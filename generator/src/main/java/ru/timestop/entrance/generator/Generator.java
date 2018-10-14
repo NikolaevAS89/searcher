@@ -16,11 +16,10 @@ import static ru.timestop.entrance.utilites.IOUtil.flushQuiet;
  * @since 29.09.2018
  */
 public class Generator {
-    //private static final Logger LOG = Logger.getLogger(Generator.class);
 
     private static final int NUMBER_COUNT = 100000000;
     private static final int UPPER_BOUND = Integer.MAX_VALUE;
-    private static final String FILES_MASK = "numbers%d.data";
+    private static final String FILES_MASK = "d%d";
 
     private final int filesCount;
 
@@ -57,7 +56,7 @@ public class Generator {
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new Generator(1).generate();
     }
 }
