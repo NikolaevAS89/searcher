@@ -22,11 +22,13 @@ import java.util.concurrent.Future;
  * @since 11.10.2018
  */
 @Component
+//что за имя такое ResultService? О каких результатах идёт речь? SearchService больше подходит
 public class ResultServiceImpl implements ResultService {
     private static final Logger LOG = Logger.getLogger(ResultServiceImpl.class);
 
     @Autowired
     private FileSearchServiceImpl searchService;
+    // ты ввёл интерфейс FileSearchService, но ты не используешь FileSearchService в качестве абстракции. Не надо так.
 
     @Autowired
     private ResultEntityService resultEntityService;
@@ -45,12 +47,18 @@ public class ResultServiceImpl implements ResultService {
         } catch (DataAccessException e) {
             LOG.warn(e);
         }
+        // я чувствую большую вложенность. Баланс Силы нарушен, нужно ввести больше функций
         if (resultEntity == null) {
             ResultEntity.Builder builder = new ResultEntity.Builder(number);
             try {
                 Future<AgregatedSearchResult> future = searchService.search(number);
                 AgregatedSearchResult agregated = future.get();
 
+                //итак, что у нас тут делается? Ты сначала смотришь на список файлов и если он пуст, то ставишь код
+                // NOT_FOUND и записываешь ошибку, что число не найдено, но потом ты смотришь, не пусты ли ошибки. А
+                // что если список файлов
+                // пуст, так как везде падала какая-то ошибка. Ты конечно переставляешь статус, но некорректная
+                // оштбка о том, что числа нет так и остаётся.
                 if (agregated.getFiles().isEmpty()) {
                     builder.setCode(ResultCode.NOT_FOUND).addError(new NumberNotFoundException());
                 } else {
@@ -72,7 +80,7 @@ public class ResultServiceImpl implements ResultService {
         try {
             resultEntityService.registration(resultEntity);
         } catch (DataAccessException e) {
-            LOG.error(e);
+            LOG.error(e); // ты уже логируешь в resultEntityService.registration. Вполне достаточно
         }
         return toResult(resultEntity);
     }
@@ -81,6 +89,8 @@ public class ResultServiceImpl implements ResultService {
      * @param entity
      * @return
      */
+    // Result - это сущность уровня представления, то есть на слой выше, здесь ей не место, мапинг нужно перенести
+    // выше.
     private Result toResult(ResultEntity entity) {
         if (entity == null) {
             return null;

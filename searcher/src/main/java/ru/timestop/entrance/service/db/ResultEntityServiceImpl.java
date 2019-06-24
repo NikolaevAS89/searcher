@@ -37,7 +37,6 @@ public class ResultEntityServiceImpl implements ResultEntityService {
     @Autowired
     private BasicDataSource dataSource;
 
-
     @Override
     public ResultEntity createNew(Integer number) {
         return new ResultEntity.Builder(number).build();
@@ -73,6 +72,10 @@ public class ResultEntityServiceImpl implements ResultEntityService {
         if (LOG.isDebugEnabled()) {
             LOG.debug("getRegistredResult(" + JsonUtil.toJson(number) + ")");
         }
+        //1) Заполняй единообразно, а то где-то параметр, а гле-то конкатенация (я знаю, что ERROR определена заранее
+        // и SQL-инъекция исключена, но тем не менее)
+        //2) почему только по числам, у которых была ошибка при поиске?
+        //3) Во имя Мерлина, почему не Spring Data?)))
         String sql = "select * from entrances where \"NUMBER\"=:number_value and \"CODE\"!='" + ERROR.toString() + "' limit 1";
 
         Map<String, Integer> params = Collections.singletonMap("number_value", number);
@@ -80,7 +83,7 @@ public class ResultEntityServiceImpl implements ResultEntityService {
         try {
             return jdbcTemplate.queryForObject(sql, params, MAPPER);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            return null; //если ты потенциально можешь вернуть null то возвращай Optional
         }
     }
 }
